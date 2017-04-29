@@ -45,5 +45,8 @@
   (.registerCommand (ListenerWrapper/instance) "eval" com.proximyst.discordselfbot.commands.eval/evaluate)
   (.registerCommand (ListenerWrapper/instance) "evaluate" com.proximyst.discordselfbot.commands.eval/evaluate)
 
+  (.registerCommand (ListenerWrapper/instance) "quit" com.proximyst.discordselfbot.commands.quit/quit)
+  (.registerCommand (ListenerWrapper/instance) "exit" com.proximyst.discordselfbot.commands.quit/quit)
+
   (.addEventListener jda (ListenerWrapper/instance))
   )
