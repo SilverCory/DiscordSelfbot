@@ -3,7 +3,8 @@
            [net.dv8tion.jda.core.entities TextChannel Guild User Message]
            [javax.script ScriptEngine]
            [com.proximyst.discordselfbot.java Return]
-           [net.dv8tion.jda.core EmbedBuilder]))
+           [net.dv8tion.jda.core EmbedBuilder]
+           [java.awt Color]))
 
 (def ^ScriptEngine engine)
 
@@ -18,6 +19,8 @@
     (throw (Return. "The user has to specify something in JS to run.")))
   (.queue (.editMessage message
                         (-> (EmbedBuilder.)
+                            (.setTitle "Evaluation (JS) - Computing..." nil)
+                            (.setColor (Color/CYAN))
                             (.addField "Input"
                                        (str
                                          "```js"
@@ -38,15 +41,24 @@
                             )
                         )
           )
-  (let [^String response nil]
+  (let [^String response nil
+        ^Color colour nil]
     (try
       (do
         (def response (.toString (.eval engine (str ("var imports = new JavaImporter('java.lang','java.io','java.math','java.util','java.util.concurrent','java.time'); with (imports) { " (String/join " " args) " }")))))
+        (def colour (Color/GREEN))
         )
       (catch Exception ex
-        (def response (.getMessage ex))))
+        (do
+          (def response (.getMessage ex))
+          (def colour (Color/RED))
+          )
+        )
+      )
     (.queue (.editMessage message
                           (-> (EmbedBuilder.)
+                              (.setTitle "Evaluation (JS) - Complete!" nil)
+                              (.setColor colour)
                               (.addField "Input"
                                          (str
                                            "```javascript"
