@@ -4,9 +4,16 @@
            [com.proximyst.discordselfbot.java ListenerWrapper]
            [net.dv8tion.jda.core.events.message MessageReceivedEvent]
            [net.dv8tion.jda.core.entities TextChannel User Guild Message]
-           [javax.script ScriptEngineManager]))
+           [javax.script ScriptEngineManager]
+           [java.io File InputStream FileOutputStream]
+           [java.nio.file Files StandardCopyOption Path]
+           [java.net URL]
+           [javax.imageio ImageIO]
+           [java.awt Image]))
 
 (def ^JDA jda)
+(def ^File dataDir)
+(def data '[])
 
 (defn -main
   [& args]
@@ -24,6 +31,16 @@
       (.buildBlocking)
       )
     )
+  (def dataDir (File. (str "." (File/separator) "selfbot-data")))
+  (when (not (.exists dataDir))
+    (.mkdirs dataDir))
+
+  (conj data '[:boi (File. dataDir "boi.jpg")])
+  (when (not (.exists ^File (get data :boi)))
+    (let [^File boi (get data :boi)
+          ^InputStream stream (-> (URL. "http://i.imgur.com/fhHuvIP.jpg") (.openConnection) (.getInputStream))]
+      (Files/copy stream (.toPath boi))
+      (.close stream)))
 
   (set! (ListenerWrapper/jda) jda)
   (.setFallback (ListenerWrapper/instance)
