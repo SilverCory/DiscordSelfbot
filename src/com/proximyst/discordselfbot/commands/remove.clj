@@ -17,7 +17,8 @@
         ^List history nil]
     (try (def amount (Integer/parseInt (re-find #"\A-?\d+" (first args))))
          (catch NumberFormatException ex
-           (-> message (.editMessage "Couldn't parse integer to remove.") (.queue))))
+           (-> message (.editMessage "Couldn't parse integer to remove.") (.queue))
+           (throw (Return. "Couldn't parse."))))
     (def history (-> channel (.getHistory) (.getRetrievedHistory)))
     (for [i (range 0 (.size history))
           :let [^Message msg (nth history i)]]
