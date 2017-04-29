@@ -48,5 +48,9 @@
   (.registerCommand (ListenerWrapper/instance) "quit" com.proximyst.discordselfbot.commands.quit/quit)
   (.registerCommand (ListenerWrapper/instance) "exit" com.proximyst.discordselfbot.commands.quit/quit)
 
+  (.registerCommand (ListenerWrapper/instance) "remove" com.proximyst.discordselfbot.commands.remove/remove)
+  (.registerCommand (ListenerWrapper/instance) "purge" com.proximyst.discordselfbot.commands.remove/remove)
+  (.registerCommand (ListenerWrapper/instance) "delete" com.proximyst.discordselfbot.commands.remove/remove)
+
   (.addEventListener jda (ListenerWrapper/instance))
   )
