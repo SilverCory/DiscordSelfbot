@@ -8,7 +8,6 @@
   :main ^:skip-aot com.proximyst.discordselfbot.core
   :java-source-paths ["src"]
   :javac-options ["-target" "1.8" "-source" "1.8" "-Xlint:options"]
-  :global-vars {*warn-on-reflection* true}
   :uberjar-name "UberJar-%s.jar"
   :source-paths ["src"]
   :target-path "target/%s"
