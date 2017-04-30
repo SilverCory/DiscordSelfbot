@@ -15,37 +15,5 @@
    ^Guild guild
    ^Message message
    args]
-  (let [sentTime ^OffsetDateTime (.getCreationTime message)]
-
-    (-> message
-        (.editMessage
-          (-> (EmbedBuilder.)
-              (.setTitle "Ping - Computing..." nil)
-              (.setColor (Color/YELLOW))
-              (.build)
-              )
-          )
-
-        (.queue
-          (Utils/fnConsumer
-            #(let [msg ^Message %
-                   creation ^OffsetDateTime (.getCreationTime msg)]
-
-               (-> msg
-                   (.editMessage
-                     (->
-                       (EmbedBuilder.)
-                       (.setTitle "Ping - Complete!" nil)
-                       (.setColor (Color/GREEN))
-                       (.addField "Ping" (str (.until sentTime creation (ChronoUnit/MILLIS)) "ms") true)
-                       (.build)
-                       )
-                     )
-                   (.queue)
-                   )
-               )
-            )
-          )
-        )
-    )
+  (-> message (.editMessage (str "\uD83C\uDFD3 Ping: " (.getPing (.getJDA message)) "ms")) (.queue))
   )
