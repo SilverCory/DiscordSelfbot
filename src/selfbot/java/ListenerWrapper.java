@@ -1,4 +1,4 @@
-package com.proximyst.discordselfbot.java;
+package selfbot.java;
 
 import clojure.lang.IFn;
 import net.dv8tion.jda.core.JDA;
@@ -28,15 +28,20 @@ public class ListenerWrapper extends ListenerAdapter {
         IFn method;
         try {
             if ((method = commands.get(command.toLowerCase())) == null) {
-                fallback.invoke(event, event.getTextChannel(), event.getAuthor(), event.getGuild(), event.getMessage(), message.split(" "));
+                fallback.invoke(event, event.getChannel(), event.getAuthor(), event.getGuild(), event.getMessage(), message.split(" "));
                 return;
             }
-            method.invoke(event, event.getTextChannel(), event.getAuthor(), event.getGuild(), event.getMessage(), message.split(" "));
+            method.invoke(event, event.getChannel(), event.getAuthor(), event.getGuild(), event.getMessage(), message.split(" "));
         } catch (Exception ex) {
             if (ex instanceof Return) {
                 return;
             }
-            ex.printStackTrace();
+            boolean isLoc = ex.getLocalizedMessage() != null;
+            StringBuilder ats = new StringBuilder();
+            for (StackTraceElement element : ex.getStackTrace()) {
+                ats.append("\t at ").append(element.toString()).append("\n");
+            }
+            event.getMessage().editMessage("```js\n" + ex.getClass().getName() + (isLoc ? ": " + ex.getLocalizedMessage() : "") + ats.toString() + "\n```").queue();
         }
     }
 

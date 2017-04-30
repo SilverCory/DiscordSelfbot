@@ -5,7 +5,7 @@
             :url  "https://github.com/Proximyst/DiscordSelfbot/blob/master/LICENSE"}
   :dependencies [[org.clojure/clojure "1.8.0"] [net.dv8tion/JDA "3.0.0_188"]]
   :repositories [["jcenter" "http://jcenter.bintray.com"]]
-  :main ^:skip-aot com.proximyst.discordselfbot.core
+  :main ^:skip-aot selfbot.core
   :java-source-paths ["src"]
   :javac-options ["-target" "1.8" "-source" "1.8" "-Xlint:options"]
   :uberjar-name "UberJar-%s.jar"

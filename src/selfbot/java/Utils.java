@@ -1,4 +1,4 @@
-package com.proximyst.discordselfbot.java;
+package selfbot.java;
 
 import clojure.lang.IFn;
 

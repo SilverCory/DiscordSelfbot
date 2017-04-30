@@ -1,4 +1,4 @@
-package com.proximyst.discordselfbot.java;
+package selfbot.java;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
