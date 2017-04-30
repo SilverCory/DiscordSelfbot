@@ -15,7 +15,7 @@
         [selfbot.commands.quit :only [quit]]
         [selfbot.commands.remove :only [removeCmd]]
         [selfbot.commands.ping :only [ping]]
-        [selfbot.commands.other :only [pi]]
+        [selfbot.commands.other :only [pi now]]
         [selfbot.commands.embed :only [embed]]
         [selfbot.commands.emojitext :only [emojitext]] :reload-all))
 
@@ -87,6 +87,9 @@
     (.registerCommand lw "ping" #(ping %1 %2 %3 %4 %5 %6))
 
     (.registerCommand lw "pi" #(pi %1 %2 %3 %4 %5 %6))
+
+    (.registerCommand lw "now" #(now %1 %2 %3 %4 %5 %6))
+    (.registerCommand lw "time" #(now %1 %2 %3 %4 %5 %6))
 
     (.registerCommand lw "embed" #(embed %1 %2 %3 %4 %5 %6))
     (.registerCommand lw "quote" #(embed %1 %2 %3 %4 %5 %6))
