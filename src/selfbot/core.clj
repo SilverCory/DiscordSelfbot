@@ -15,7 +15,9 @@
         [selfbot.commands.quit :only [quit]]
         [selfbot.commands.remove :only [removeCmd]]
         [selfbot.commands.ping :only [ping]]
-        [selfbot.commands.other :only [pi]] :reload-all))
+        [selfbot.commands.other :only [pi]]
+        [selfbot.commands.embed :only [embed]]
+        [selfbot.commands.emojitext :only [emojitext]] :reload-all))
 
 (def ^JDA jda)
 (def ^File dataDir)
@@ -37,7 +39,7 @@
   (def jda
     (->
       (JDABuilder. (AccountType/CLIENT))
-      (.setToken (first args))
+      (.setToken (.replace (cast java.lang.String (first args)) "\"" ""))
       (.setCorePoolSize 6)
       (.buildBlocking)
       )
@@ -56,15 +58,15 @@
     )
 
   (set! (ListenerWrapper/jda) jda)
-  (.setFallback (ListenerWrapper/instance)
-                (fn [^MessageReceivedEvent event
-                     ^MessageChannel channel
-                     ^User author
-                     ^Guild guild
-                     ^Message message
-                     args]
-                  (.queue (.editMessage message (str "The command specified doesn't exist: " (first args))))
-                  )
+  (.setFallback (ListenerWrapper/instance) (fn
+                                             [^MessageReceivedEvent event
+                                              ^MessageChannel channel
+                                              ^User author
+                                              ^Guild guild
+                                              ^Message message
+                                              args]
+                                             (.queue (.editMessage message (str "The command specified doesn't exist: " (first args))))
+                                             )
                 )
 
   (let [lw ^ListenerWrapper (ListenerWrapper/instance)]
@@ -85,6 +87,13 @@
     (.registerCommand lw "ping" #(ping %1 %2 %3 %4 %5 %6))
 
     (.registerCommand lw "pi" #(pi %1 %2 %3 %4 %5 %6))
+
+    (.registerCommand lw "embed" #(embed %1 %2 %3 %4 %5 %6))
+    (.registerCommand lw "quote" #(embed %1 %2 %3 %4 %5 %6))
+
+    (.registerCommand lw "emoji" #(emojitext %1 %2 %3 %4 %5 %6))
+    (.registerCommand lw "emojis" #(emojitext %1 %2 %3 %4 %5 %6))
+    (.registerCommand lw "memeify" #(emojitext %1 %2 %3 %4 %5 %6))
     )
 
   (.addEventListener jda (to-array [^ListenerAdapter (ListenerWrapper/instance)]))
