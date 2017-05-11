@@ -30,9 +30,6 @@
 
 (defn -main
   [& args]
-
-  (set! *warn-on-reflection* true)
-
   (if (= (count args) 0)
     (throw (RuntimeException. "You need to specify a token.")))
 
