@@ -82,3 +82,65 @@
     (.queue (.editMessage message (-> builder (.addField (.asField field)) (.build))))
     )
   )
+
+(defn evaluateClojure
+  [^MessageReceivedEvent event
+   ^MessageChannel channel
+   ^User author
+   ^Guild guild
+   ^Message message
+   args]
+  (if (= (count (drop 1 args)) 0)
+    (throw (Return. "The user has to specify something in Clojure to run.")))
+  (.queue (.editMessage message
+                        (-> (EmbedBuilder.)
+                            (.setTitle "Evaluation (Clojure) - Computing..." nil)
+                            (.setColor (Color/CYAN))
+                            (.addField "Input"
+                                       (str
+                                         "```clojure\n"
+                                         (clojure.string/join " " (drop 1 args))
+                                         "\n```")
+                                       true)
+                            (.addField "Output"
+                                       (str
+                                         "```\n"
+                                         "Evalutating..."
+                                         "\n```")
+                                       true)
+                            (.build)
+                            )
+                        )
+          )
+  (let [^EmbedBuilder builder (EmbedBuilder.)
+        ^MutableField field (MutableField.)]
+    (try
+      (do
+        (.setTitle builder "Evaluation (Clojure) - Complete!" nil)
+        (.addField builder "Input"
+                   (str
+                     "```clojure\n"
+                     (clojure.string/join " " (drop 1 args))
+                     "\n```")
+                   true)
+        (.setName field "Output")
+        (.setInline field true)
+
+        (let [before (System/currentTimeMillis)]
+          (.setValue field (str "```clojure\n" (eval (read-string (clojure.string/join " " (drop 1 args)))) "\n```"))
+          (.setFooter builder (str "Time elapsed: " (- (System/currentTimeMillis) before) "ms") nil)
+          )
+        (.setColor builder (Color/GREEN)))
+      (catch Exception ex
+        (do
+          (.setValue field (str "```js\n" (.getMessage ex) "\n```"))
+          (.setTitle builder "Evaluation (Clojure) - Error!" nil)
+          (.setName field "Error")
+          (.setColor builder (Color/RED))
+          (.setFooter builder nil nil)
+          (.printStackTrace ex))
+        )
+      )
+    (.queue (.editMessage message (-> builder (.addField (.asField field)) (.build))))
+    )
+  )

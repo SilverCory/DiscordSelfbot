@@ -43,7 +43,7 @@
             (.setColor (Color/GREEN))
             (.setTitle "Now" nil)
             (.addField "Millis/UNIX" (str time "ms since epoch") false)
-            (.addField "Date" (-> (SimpleDateFormat. "EEE, d MMMM yyyy ss:mm:HH") (.format (Date. time))) false)
+            (.addField "Date" (-> (SimpleDateFormat. "EEE, d MMMM yyyy HH:mm:ss") (.format (Date. time))) false)
             (.build)))
         (.queue)
         )

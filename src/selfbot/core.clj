@@ -11,7 +11,7 @@
            [java.awt Image]
            [net.dv8tion.jda.core.hooks ListenerAdapter])
   (:use [selfbot.commands.resolve :only [resolveUrl]]
-        [selfbot.commands.eval :only [evaluate]]
+        [selfbot.commands.eval :only [evaluate evaluateClojure]]
         [selfbot.commands.quit :only [quit]]
         [selfbot.commands.remove :only [removeCmd]]
         [selfbot.commands.ping :only [ping]]
@@ -76,6 +76,12 @@
     ; As long as the eval registering points to the same methods, there should be no problem.
     (.registerCommand lw "eval" #(evaluate %1 %2 %3 %4 %5 %6))
     (.registerCommand lw "evaluate" #(evaluate %1 %2 %3 %4 %5 %6))
+
+    (.registerCommand lw "ceval" #(evaluateClojure %1 %2 %3 %4 %5 %6))
+    (.registerCommand lw "clojure" #(evaluateClojure %1 %2 %3 %4 %5 %6))
+    (.registerCommand lw "cevaluate" #(evaluateClojure %1 %2 %3 %4 %5 %6))
+    (.registerCommand lw "clojureeval" #(evaluateClojure %1 %2 %3 %4 %5 %6))
+    (.registerCommand lw "clojureval" #(evaluateClojure %1 %2 %3 %4 %5 %6))
 
     (.registerCommand lw "quit" #(quit %1 %2 %3 %4 %5 %6))
     (.registerCommand lw "exit" #(quit %1 %2 %3 %4 %5 %6))
