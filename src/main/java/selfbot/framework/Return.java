@@ -1,17 +1,10 @@
-package selfbot.java;
+package selfbot.framework;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-/**
- * Return wrapper for clojure methods.
- */
 public class Return extends Exception {
-    public Return() {
-    }
-
-    public Return(final String comment) {
-    }
+    public static final Return instance = new Return();
 
     @Override
     public StackTraceElement[] getStackTrace() {
@@ -20,12 +13,12 @@ public class Return extends Exception {
 
     @Override
     public String getMessage() {
-        return "Returned out of method";
+        return "Returned out of method.";
     }
 
     @Override
     public String getLocalizedMessage() {
-        return "Returned out of method";
+        return getMessage();
     }
 
     @Override
@@ -38,10 +31,10 @@ public class Return extends Exception {
     }
 
     @Override
-    public void printStackTrace(final PrintStream s) {
+    public void printStackTrace(PrintStream s) {
     }
 
     @Override
-    public void printStackTrace(final PrintWriter s) {
+    public void printStackTrace(PrintWriter s) {
     }
 }
