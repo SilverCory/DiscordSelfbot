@@ -4,13 +4,16 @@ buildscript {
             url "http://clojars.org/repo"
         }
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'clojuresque:clojuresque:1.7.0'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.0'
     }
 }
 
 plugins {
+    id 'com.github.johnrengelman.shadow' version '2.0.0'
     id 'idea'
     id 'java'
     id 'application'
@@ -41,30 +44,7 @@ dependencies {
     compile 'org.clojure:clojure:1.8.0'
 }
 
-uberjar {
+shadowJar {
     baseName = 'Selfbot'
-    manifest.attributes 'Main-Class': mainClassName
     enabled = true
 }
-
-/*compileClojure {
-    aotCompile = true
-    copySourceToOutput = false
-
-    reflectionWarnings {
-        enabled = true
-        projectOnly = true
-    }
-
-    disableLocalsClearing = true
-    maxHeapSize '2048m'
-}*/
-
-/*task uberjar(type: Jar, dependsOn: [':processResources']) {
-    from files(sourceSets.main.output.classesDir)
-    from configurations.runtime.asFileTree.files.collect { zipTree(it) }
-
-    manifest {
-        attributes 'Main-Class': mainClassName
-    }
-}*/

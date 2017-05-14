@@ -1,2 +1,2 @@
 rm -rf build
-./gradlew uberjar
+./gradlew shadowJar
